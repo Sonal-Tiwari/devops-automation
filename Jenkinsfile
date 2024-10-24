@@ -4,6 +4,7 @@ pipeline {
         stage('checkout') {
             steps {
                 checkout scm
+                bat 'dir'
             }
         }
         stage('Install Dependencies') {
