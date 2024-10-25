@@ -1,34 +1,36 @@
 pipeline {
     agent any
     stages {
-        stage('checkout') {
+        stage ('checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/Sonal-Tiwari/devops-automation.git'
             }
         }
-        stage('Install Dependencies') {
+        stage ('install dependencies') {
             steps {
-                bat 'npm install'
-            }
-        }
-        stage('Build') {
-            steps {
-                bat 'npm run build'
-            }
-        }
-        stage('Docker Build') {
-            steps {
-                script {
-                    bat "docker build -t devopsminiproject ."
+                dir('rect-beach-resort-dev') {
+                    bat 'npm install'
                 }
             }
         }
-        stage('Docker Run') {
+        stage ('Build') {
             steps {
-                script {
-                    bat "docker run -d -p 5173:5173 devopsminiproject:latest"
+                dir('rect-beach-resort-dev') {
+                    bat 'npm run build'
                 }
             }
         }
-    }
+        stage ('Build image') {
+            steps {
+                dir('rect-beach-resort-dev') {
+                    bat 'docker build -t rect-beach-resort-deve .'
+                }
+            }
+        }
+        stage ('Run container') {
+            steps {
+                bat 'docker run -d --name rect-beach-resort-dev -p 3000:3000 ecommerce:latest'
+            }
+        }
+    }
 }
