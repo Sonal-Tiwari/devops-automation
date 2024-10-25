@@ -9,6 +9,7 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
+                dir('react-beach-resort-dev')
                 bat 'npm install'
             }
         }
